@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <title>Web Chat: User Direct Line Token</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!--
+      This CDN points to the latest official release of Web Chat. If you need to test against Web Chat's latest bits, please refer to pointing to Web Chat's MyGet feed:
+      https://github.com/microsoft/BotFramework-WebChat#how-to-test-with-web-chats-latest-bits
+    -->
+  <script crossorigin="anonymous" src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
+  <script src="https://alcdn.msauth.net/lib/1.3.2/js/msal.min.js"></script>
+
+  <style>
+     html,
+
+      body {
+        background-color: #e9f3f3;
+        height: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+        font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+      }
+
+      #webchat {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        height: 60%;
+        margin: 30px 50px 75px 50px;
+        max-width: 480px;
+        min-width: 500px;
+      }
+
+  </style>
+</head>
+
+<body>
+  <div id="webchat" role="main"></div>
+  <script>
+    // AAD app ID for app that user is logging into
+    const AAD_APP_ID = 'fe24244d-94b9-426e-83f6-54cb51c09c8d';
+    // AAD app redirect URI after auth flow
+    const AAD_REDIRECT_URI = 'http://localhost:5500';
+
+    const styleOptions = {
+        bubbleBackground: 'rgba(0, 0, 255, .1)',
+        bubbleFromUserBackground: 'rgba(0, 255, 0, .1)'
+    };
+
+    // Calls backend API to get Direct Line token
+    async function getDirectLineToken(idToken) {
+      const res = await fetch('http://localhost:3000/api/direct-line-token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id_token: idToken }),
+      });
+
+      if (!res.ok) {
+        throw new Error(`Failed to get Direct Line token due to ${res.status}`);
+      }
+
+      return await res.json();
+    }
+
+    // Create MSAL object
+    const myMSALObj = new Msal.UserAgentApplication({
+      auth: {
+        clientId: AAD_APP_ID,
+        redirectUri: AAD_REDIRECT_URI,
+      }
+    });
+
+    (async function main() {
+      const userAccount = myMSALObj.getAccount();
+      if (userAccount) {
+        console.log(`User is already signed in: ${userAccount.userName}`);
+
+        // There are edge cases where acquiring a token silently can fail
+        // For example, a user may have revoked consent for the application
+        // In a production app, you should catch and handle errors from the ssoSilent call
+        console.log(`Attempting to silently acquire ID token...`);
+        const ssoSilentResponse = await myMSALObj.ssoSilent({ loginHint: userAccount.userName });
+        const idToken = ssoSilentResponse.idToken.rawIdToken;
+        console.log(`Successfully acquired ID token!`);
+
+        console.log(`Attempting to get Direct Line token...`);
+        const directLineTokenResponse = await getDirectLineToken(idToken);
+        console.log(`Got Direct Line token (user ID is ${directLineTokenResponse.userId})`);
+
+        WebChat.renderWebChat(
+          {
+            directLine: WebChat.createDirectLine({ token: directLineTokenResponse.token }),
+            styleOptions
+          },
+          document.getElementById('webchat')
+        );
+      } else {
+        console.log(`User is not signed in. Attempting to log in via redirect...`);
+        myMSALObj.loginRedirect();
+      }
+    })().catch(err => console.error(err));
+  </script>
+</body>
+
+</html>
