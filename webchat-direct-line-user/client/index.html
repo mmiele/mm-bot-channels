@@ -14,7 +14,7 @@
   <style>
      html,
 
-      body {
+     body {
         background-color: #e9f3f3;
         height: 100%;
         max-width: 800px;
@@ -34,7 +34,21 @@
 </head>
 
 <body>
-  <div id="webchat" role="main"></div>
+
+  <h2> <img src="web-chat.png" alt="web chat icon"/> Web Chat client</h2>
+
+  This page contains a minimally customized Web Chat client which allows user to interact with a bot.<br/>
+  It creates a token based on the bot Direct Line secret.
+  This is <span style="background-color:yellow">important to avoid security breaches</span>. <br/>
+
+  <hr style="border-top: 3px dashed blue;"/>
+
+  <h3>Talk to the bot</h3>
+
+
+  <div style="width:50%; border: 2px solid #73AD21;"  id="webchat" role="main"></div>
+
+
   <script>
     // AAD app ID for app that user is logging into
     const AAD_APP_ID = 'fe24244d-94b9-426e-83f6-54cb51c09c8d';

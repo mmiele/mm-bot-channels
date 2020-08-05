@@ -14,40 +14,51 @@
   <style>
      html,
 
-      body {
+     body {
         background-color: #e9f3f3;
         height: 100%;
-        max-width: 1600px;
+        max-width: 800px;
         margin: 0 auto;
         font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
       }
 
-      #webchat {
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-        height: 60%;
-        margin: 30px 50px 75px 50px;
-        max-width: 50%;
-        min-width: 100%;
-      }
+       #webchat {
+         box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+         height: 60%;
+         margin: 30px 50px 75px 50px;
+         max-width: 480px;
+         min-width: 500px;
+       }
 
   </style>
 </head>
 
 <body>
-  <div id="webchat" role="main"></div>
+  <h2> <img src="web-chat.png" alt="web chat icon"/> Custom Web Chat client</h2>
+
+  This page contains a fully customized Web Chat client which allows user to interact with a bot.<br/>
+  It creates a token based on the bot Direct Line secret.
+  This is <span style="background-color:yellow">important to avoid security breaches</span>. <br/>
+
+  <hr style="border-top: 3px dashed blue;"/>
+
+  <h3>Talk to the bot</h3>
+
+  <div style="width:50%; border: 2px solid #73AD21;"  id="webchat" role="main"></div>
+
   <script>
 
-    // "styleSet" is a set of CSS rules which are generated from "styleOptions"
-    const styleSet = window.WebChat.createStyleSet({
+      // "styleSet" is a set of CSS rules which are generated from "styleOptions"
+      const styleSet = window.WebChat.createStyleSet({
          bubbleBackground: 'rgba(0, 0, 255, .1)',
          bubbleFromUserBackground: 'rgba(0, 255, 0, .1)',
 
-         botAvatarImage: './bot.PNG',
+         botAvatarImage: 'bot.PNG',
          botAvatarInitials: 'BF',
-         userAvatarImage: './man.PNG',
+         userAvatarImage: 'man.PNG',
          userAvatarInitials: 'WC',
          rootHeight: '100%',
-         rootWidth: '30%'
+         rootWidth: '100%'
       });
 
       // After generated, you can modify the CSS rules
