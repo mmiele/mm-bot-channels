@@ -50,9 +50,12 @@
 
 
   <script>
-    // AAD app ID for app that user is logging into
-    const AAD_APP_ID = 'fe24244d-94b9-426e-83f6-54cb51c09c8d';
-    // AAD app redirect URI after auth flow
+
+    // Azure AD identity provider app ID. Used to authenticate the bot's users.
+    const AAD_APP_ID = '';
+
+    // Azure AD app redirect URI after the auth flow.
+    // Add it to the Azure AD identity provider, too.
     const AAD_REDIRECT_URI = 'http://localhost:5500';
 
     const styleOptions = {
