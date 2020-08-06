@@ -16,8 +16,8 @@ namespace CSharpNetCore_DirectLine_Client
         public static async Task Run()
         {
 
-            var endpoint = "https://echobotmm.azurewebsites.net/.bot/";
-            var secret = "sZ7wlrWRrps.XxJimWgzMJf_aUkJkjftF_lbCN10JIG1GBrKh-1hdyI";
+            var endpoint = "https://<your bot name>.azurewebsites.net/.bot/";
+            var secret = "<Your bot  Direct Line secret>";
 
             var userId = Guid.NewGuid().ToString();
             var userName = "Fred";
