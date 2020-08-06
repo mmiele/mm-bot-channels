@@ -1,0 +1,78 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\v-mimiel\\aWork\\GitHub\\mm-bot-channels\\console-client-direct-line\\ConsoleClient\\ConsoleClient.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\v-mimiel\\aWork\\GitHub\\mm-bot-channels\\console-client-direct-line\\ConsoleClient\\ConsoleClient.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\v-mimiel\\aWork\\GitHub\\mm-bot-channels\\console-client-direct-line\\ConsoleClient\\ConsoleClient.csproj",
+        "projectName": "ConsoleClient",
+        "projectPath": "C:\\Users\\v-mimiel\\aWork\\GitHub\\mm-bot-channels\\console-client-direct-line\\ConsoleClient\\ConsoleClient.csproj",
+        "packagesPath": "C:\\Users\\v-mimiel\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\v-mimiel\\aWork\\GitHub\\mm-bot-channels\\console-client-direct-line\\ConsoleClient\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\v-mimiel\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://botbuilder.myget.org/F/botbuilder-v4-dotnet-daily/api/v3/index.json": {},
+          "https://botbuilder.myget.org/F/experimental/api/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "dependencies": {
+            "FChatSharpLib.websocketsharp.core": {
+              "target": "Package",
+              "version": "[1.0.1, )"
+            },
+            "Microsoft.Bot.Builder": {
+              "target": "Package",
+              "version": "[4.8.0-rc2, )"
+            },
+            "Microsoft.Bot.Connector.DirectLine": {
+              "target": "Package",
+              "version": "[3.0.3-Preview1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.302\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
