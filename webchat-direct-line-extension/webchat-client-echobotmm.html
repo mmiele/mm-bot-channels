@@ -31,7 +31,8 @@
     <div id="webchat" role="main"></div>
     <script>
       (async function() {
-        const res = await fetch('https://echobotmm.azurewebsites.net/.bot/v3/directline/tokens/generate', { method: 'POST' });
+        const res = await fetch('https://echobotmm.azurewebsites.net/.bot/v3/directline/tokens/generate',
+        { method: 'POST', Headers:{'Authorization':'Bearer ' + '<your bot direct line secret>'} });
         const { token } = await res.json();
 
         window.WebChat.renderWebChat(
