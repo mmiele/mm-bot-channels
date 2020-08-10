@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Web Chat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script crossorigin="anonymous" src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
+    <script src="https://alcdn.msauth.net/lib/1.3.2/js/msal.min.js"></script>
+
+    <style>
+      html,
+      body {
+        background-color: #f7f7f7;
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+      }
+
+      #webchat {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        height: 100%;
+        margin: auto;
+        max-width: 480px;
+        min-width: 360px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="webchat" role="main"></div>
+    <script>
+
+      // Azure AD identity provider app ID. Used to authenticate the bot's users.
+      const AAD_APP_ID = 'fe24244d-94b9-426e-83f6-54cb51c09c8d';
+
+      // Azure AD app redirect URI after the auth flow.
+      // Add it to the Azure AD identity provider, too.
+      const AAD_REDIRECT_URI = 'http://localhost:5500';
+
+       // Calls backend API to get Direct Line token
+      async function getDirectLineToken(idToken) {
+        const res = await fetch('http://localhost:3000/api/direct-line-token', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ id_token: idToken }),
+        });
+
+        if (!res.ok) {
+          throw new Error(`Failed to get Direct Line token due to ${res.status}`);
+        }
+
+        return await res.json();
+      }
+
+
+      // Create MSAL object
+      const myMSALObj = new Msal.UserAgentApplication({
+        auth: {
+          clientId: AAD_APP_ID,
+          redirectUri: AAD_REDIRECT_URI,
+        }
+      });
+
+      (async function main() {
+
+        const userAccount = myMSALObj.getAccount();
+
+        if (userAccount) {
+
+          console.log(`User is already signed in: ${userAccount.userName}`);
+
+          console.log(`Attempting to silently acquire ID token...`);
+          const ssoSilentResponse = await myMSALObj.ssoSilent({ loginHint: userAccount.userName });
+          const idToken = ssoSilentResponse.idToken.rawIdToken;
+          console.log(`Successfully acquired ID token!`);
+
+          console.log(`Attempting to get Direct Line token...`);
+          const directLineTokenResponse = await getDirectLineToken(idToken);
+          console.log(`Got Direct Line token (user ID is ${directLineTokenResponse.userId})`);
+
+          window.WebChat.renderWebChat(
+            {
+              directLine: await window.WebChat.createDirectLineAppServiceExtension({
+                domain: 'https://EchoBotAuthMM.azurewebsites.net/.bot/v3/directline',
+                token: directLineTokenResponse.token
+              })
+            },
+            document.getElementById('webchat')
+          );
+        } else {
+          console.log(`User is not signed in. Attempting to log in via redirect...`);
+          myMSALObj.loginRedirect();
+        }
+      })().catch(err => console.error(err));
+    </script>
+  </body>
+</html>
